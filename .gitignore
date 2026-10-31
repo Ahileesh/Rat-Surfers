@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Production & Build outputs
+dist/
+dev-dist/
+build/
+coverage/
+
+# Studio internal files (hidden from GitHub)
+.aistudio/
+.aistudio
+metadata.json
+
+# Environment variables & system files
+.env*
+*.log
+.DS_Store
+

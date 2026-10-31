@@ -1,0 +1,32 @@
+{
+  "id": "/",
+  "name": "Rat Surfers: Subway Feline Escape",
+  "short_name": "Rat Surfers",
+  "description": "Help Pip the nimble rodent dodge trains, obstacles, and Shadow the subway cat!",
+  "theme_color": "#06090e",
+  "background_color": "#06090e",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
