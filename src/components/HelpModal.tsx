@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ArrowLeftRight, ArrowUp, ArrowDown, Magnet, Shield, Zap, Flame, CircleDollarSign, Wind, Github } from 'lucide-react';
+import { X, ArrowLeftRight, ArrowUp, ArrowDown, Magnet, Shield, Zap, Flame, CircleDollarSign, Wind, Code } from 'lucide-react';
 
 interface HelpModalProps {
   onClose: () => void;
@@ -169,8 +169,8 @@ export const HelpModal: React.FC<HelpModalProps> = ({ onClose }) => {
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-xs text-slate-400 hover:text-amber-300 transition-colors"
           >
-            <Github className="w-4 h-4 text-slate-400" />
-            <span>GitHub: Ahileesh/Rat-Surfers</span>
+            <Code className="w-4 h-4 text-cyan-400" />
+            <span>Source Code: Ahileesh/Rat-Surfers</span>
           </a>
 
           <button

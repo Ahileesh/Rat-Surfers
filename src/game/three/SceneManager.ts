@@ -41,7 +41,7 @@ export class SceneManager {
   private renderer: THREE.WebGLRenderer;
   private isSoftwareGl: boolean = false;
   private frameId: number = 0;
-  private clock: THREE.Clock;
+  private lastTime: number = performance.now();
 
   // World subsystems
   private tunnelManager: TunnelManager;
@@ -147,7 +147,7 @@ export class SceneManager {
     this.onStatsUpdate = onStatsUpdate;
     this.onStateChange = onStateChange;
     this.onBiomeBanner = onBiomeBanner;
-    this.clock = new THREE.Clock();
+    this.lastTime = performance.now();
 
     // 1. Detect software WebGL
     this.isSoftwareGl = (() => {
@@ -176,7 +176,7 @@ export class SceneManager {
     this.renderer.setPixelRatio(this.isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(width, height);
     this.renderer.shadowMap.enabled = !this.isSoftwareGl;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     container.appendChild(this.renderer.domElement);
 
     // 3. Scene & Bright Light Cartoon Atmosphere
@@ -257,7 +257,7 @@ export class SceneManager {
     window.addEventListener('resize', this.handleResize);
 
     // Start render loop
-    this.clock.start();
+    this.lastTime = performance.now();
     this.startLoop();
   }
 
@@ -534,8 +534,10 @@ export class SceneManager {
 
   private startLoop() {
     const tick = () => {
-      const rawDt = this.clock.getDelta();
-      const dt = Math.min(rawDt, 0.05);
+      const now = performance.now();
+      const rawDt = (now - this.lastTime) / 1000;
+      this.lastTime = now;
+      const dt = Math.min(Math.max(0.001, rawDt), 0.05);
 
       if (this.hitstopTimer > 0) {
         this.hitstopTimer -= dt;
@@ -585,8 +587,9 @@ export class SceneManager {
         this.feverTimer -= dt;
       }
 
-      // Running speed is steady and comfortable; ONLY accelerates when collecting an explicit SPEED_CHEDDAR booster!
-      const targetSpeed = hasSpeedCheddar ? this.baseSpeed * 1.35 : this.baseSpeed;
+      // Very slight speed increase over distance run (smooth, gradual escalation up to +2.5 speed)
+      const distanceSpeedBonus = Math.min(2.5, this.distanceRun * 0.002);
+      const targetSpeed = hasSpeedCheddar ? (this.baseSpeed + distanceSpeedBonus) * 1.35 : (this.baseSpeed + distanceSpeedBonus);
 
       this.currentSpeed = THREE.MathUtils.damp(this.currentSpeed, targetSpeed, 4, dt);
       const moveDelta = this.currentSpeed * dt;
@@ -609,7 +612,7 @@ export class SceneManager {
 
       this.tunnelManager.update(this.ratZ, dt);
       this.candylandVista.update(this.ratZ, dt);
-      this.obstacleSpawner.update(this.ratZ, this.currentSpeed / this.baseSpeed, dt);
+      this.obstacleSpawner.update(this.ratZ, this.currentSpeed / this.baseSpeed, dt, this.distanceRun);
 
       // ONLY when Magnet power-up is active does the rat have magnetic attraction (never in base run/fever)
       const hasMagnet = this.activePowerUps.has('MAGNET');
@@ -633,7 +636,7 @@ export class SceneManager {
 
       this.onStatsUpdate?.(this.getStats(), Array.from(this.activePowerUps.values()));
     } else if (this.gameState === 'MENU') {
-      const time = this.clock.getElapsedTime();
+      const time = performance.now() / 1000;
       this.graffitiWallMesh.visible = true;
 
       // 1. Pip the rat shakes spray can and paints graffiti on subway train wall (Subway Surfers opening!)
@@ -1074,7 +1077,7 @@ export class SceneManager {
 
       this.camera.lookAt(this.currentLaneX * 0.35, this.ratY + 1.1, this.ratZ + (isPortrait ? 8.2 : 7.5));
     } else if (this.gameState === 'MENU') {
-      const time = this.clock.getElapsedTime();
+      const time = performance.now() / 1000;
       const camX = Math.sin(time * 0.35) * (isPortrait ? 0.9 : 1.8);
       const camY = isPortrait ? 2.3 : 1.9;
       const camZ = isPortrait ? -5.8 : -4.8;

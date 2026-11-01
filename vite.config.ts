@@ -55,6 +55,7 @@ export default defineConfig(() => {
         devOptions: {
           enabled: true,
           type: 'module',
+          suppressWarnings: true,
         },
       }),
     ],
@@ -67,6 +68,9 @@ export default defineConfig(() => {
       // Development server HMR settings
       hmr: process.env.DISABLE_HMR !== 'true',
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+    },
+    build: {
+      chunkSizeWarningLimit: 1600,
     },
   };
 });

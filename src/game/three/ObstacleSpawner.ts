@@ -484,12 +484,12 @@ export class ObstacleSpawner {
   }
 
   // Dynamic Pattern-Based Spawning Engine
-  public update(playerZ: number, speedMultiplier: number, dt: number) {
+  public update(playerZ: number, speedMultiplier: number, dt: number, distanceRun: number = 0) {
     this.animClock += dt;
     const targetSpawnZ = playerZ + 150;
 
     while (this.spawnZ < targetSpawnZ) {
-      this.spawnNextPattern(this.spawnZ, playerZ, speedMultiplier);
+      this.spawnNextPattern(this.spawnZ, distanceRun, speedMultiplier);
     }
 
     // Blink beacon lights with cheerful cartoon rhythm
@@ -570,9 +570,10 @@ export class ObstacleSpawner {
     const selected = availablePatterns[Math.floor(Math.random() * availablePatterns.length)];
     const patternLength = this.executePattern(selected, z);
 
-    // Balanced, readable barrier spacing (16m - 24m gives comfortable, fun reaction time)
-    const baseSpacing = Math.max(16, 24 - speedMultiplier * 1.5);
-    this.spawnZ += patternLength + baseSpacing + Math.random() * 4;
+    // Progressive difficulty spacing: spacing tightens slightly as distance increases (from ~22m down to ~13m)
+    const distanceDifficultyReduction = Math.min(6.5, distance * 0.0025);
+    const baseSpacing = Math.max(13, 22 - distanceDifficultyReduction - speedMultiplier * 1.5);
+    this.spawnZ += patternLength + baseSpacing + Math.random() * 3.5;
   }
 
   private executePattern(pattern: PatternType, z: number): number {

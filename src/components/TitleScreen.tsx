@@ -9,7 +9,7 @@ import {
   Download,
   Check,
   HelpCircle,
-  Github,
+  Code,
 } from 'lucide-react';
 import { HighScoreRecord, StreakData } from '../types/game';
 
@@ -228,16 +228,16 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({
             {isMuted ? <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-rose-400" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />}
           </button>
 
-          {/* 7. GitHub Repository Link */}
+          {/* 7. Source Code Repository Link */}
           <a
             href="https://github.com/Ahileesh/Rat-Surfers"
             target="_blank"
             rel="noopener noreferrer"
-            title="GitHub Repository: Ahileesh/Rat-Surfers"
-            aria-label="View Source on GitHub"
+            title="Source Code Repository: Ahileesh/Rat-Surfers"
+            aria-label="View Source Code on GitHub"
             className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-900/90 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 active:scale-95 transition-all shadow-md cursor-pointer"
           >
-            <Github className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Code className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
           </a>
         </div>
       </div>
