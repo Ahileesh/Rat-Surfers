@@ -1,0 +1,6 @@
+name = "rat-surfers"
+compatibility_date = "2026-10-31"
+
+[pages_build]
+command = "npm install && npm run build"
+output_dir = "dist"
